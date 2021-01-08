@@ -8,10 +8,15 @@ import flixel.graphics.FlxGraphic;
 
 class PlayState extends FlxState
 {
+    static inline final TOOLBAR_HEIGHT = 40;
+
     var showcaseMode = true;
 
+    var scrolling = false;
+    var xScrollStart:Int;
+
     var toolbar:FlxSprite;
-    var island:FlxSprite;
+    var island:Island;
 
     override public function create()
     {
@@ -19,7 +24,8 @@ class PlayState extends FlxState
 
         bgColor = 0xff4379B7;
 
-        toolbar = new FlxSprite(0, 0, FlxGraphic.fromRectangle(FlxG.width, 32, 0xff87adff));
+        toolbar = new FlxSprite(0, 0,
+            FlxGraphic.fromRectangle(FlxG.width, TOOLBAR_HEIGHT, 0xff87adff));
 
         island = new Island();
         island.x = (FlxG.width - island.width) / 2;
@@ -35,7 +41,39 @@ class PlayState extends FlxState
         super.update(elapsed);
 
         if (showcaseMode)
-            island.angle += 0.2;
+        {
+            island.angularForce = 60;
+        }
+        else
+        {
+            if (scrolling)
+            {
+                island.angularForce = (FlxG.mouse.screenX - xScrollStart) * 2.5;
+            }
+            else if (FlxG.mouse.screenY > TOOLBAR_HEIGHT)
+            {
+                if (FlxG.mouse.screenX > 0 && FlxG.mouse.screenX < 40)
+                    island.angularForce = -460;
+                else if (FlxG.mouse.screenX > FlxG.width - 40 && FlxG.mouse.screenX < FlxG.width)
+                    island.angularForce = 460;
+                else
+                    island.angularForce = 0;
+            }
+            else
+            {
+                island.angularForce = 0;
+            }
+        }
+
+        if (FlxG.mouse.justPressedMiddle)
+        {
+            scrolling = true;
+            xScrollStart = FlxG.mouse.screenX;
+        }
+        if (FlxG.mouse.justReleasedMiddle)
+        {
+            scrolling = false;
+        }
     }
 
     override function openSubState(SubState:FlxSubState)

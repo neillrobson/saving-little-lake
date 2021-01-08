@@ -6,6 +6,13 @@ import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 
 class Island extends FlxSprite
 {
+    /**
+     * The acceleration for the island is computed from scratch every tick, based on the force
+     * acting upon it (this variable) and `angularDrag` (which we interpret as a factor of the
+     * current velocity).
+     */
+    public var angularForce = 0.0;
+
     override public function new(?X:Float = 0, ?Y:Float = 0)
     {
         super(X, Y, AssetPaths.island__png);
@@ -13,6 +20,8 @@ class Island extends FlxSprite
         scale.y = 0.75;
         updateHitbox();
         solid = false;
+
+        angularDrag = 5;
     }
 
     /**
@@ -46,5 +55,12 @@ class Island extends FlxSprite
 
         camera.drawPixels(_frame, framePixels, _matrix, colorTransform, blend, antialiasing,
             shader);
+    }
+
+    override function updateMotion(elapsed:Float):Void
+    {
+        angle += angularVelocity * elapsed;
+        angularVelocity += angularAcceleration * elapsed;
+        angularAcceleration = angularForce - angularDrag * angularVelocity;
     }
 }

@@ -1,16 +1,24 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.text.FlxText;
 
 class TitleState extends FlxSubState
 {
+    var logo:FlxSprite;
     var titleText:FlxText;
 
     override public function create()
     {
         super.create();
+
+        logo = new FlxSprite();
+        logo.loadGraphic(AssetPaths.logo__png);
+        logo.x = (FlxG.width - logo.width) / 2;
+        logo.y = 16;
+        add(logo);
 
         titleText = new FlxText();
         titleText.autoSize = true;

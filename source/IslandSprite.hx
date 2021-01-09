@@ -4,7 +4,7 @@ import flixel.FlxCamera;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 
-class Island extends FlxSprite
+class IslandSprite extends FlxSprite
 {
     /**
      * The acceleration for the island is computed from scratch every tick, based on the force

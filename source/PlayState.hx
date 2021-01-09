@@ -16,7 +16,7 @@ class PlayState extends FlxState
     var xScrollStart:Int;
 
     var toolbar:FlxSprite;
-    var island:Island;
+    var island:IslandSprite;
 
     override public function create()
     {
@@ -27,7 +27,7 @@ class PlayState extends FlxState
         toolbar = new FlxSprite(0, 0,
             FlxGraphic.fromRectangle(FlxG.width, TOOLBAR_HEIGHT, 0xff87adff));
 
-        island = new Island();
+        island = new IslandSprite();
         island.x = (FlxG.width - island.width) / 2;
         island.y = (FlxG.height - island.height) * 43 / 70;
         add(island);

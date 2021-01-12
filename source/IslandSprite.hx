@@ -1,27 +1,27 @@
 package;
 
 import flixel.FlxCamera;
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 
 class IslandSprite extends FlxSprite
 {
-    /**
-     * The acceleration for the island is computed from scratch every tick, based on the force
-     * acting upon it (this variable) and `angularDrag` (which we interpret as a factor of the
-     * current velocity).
-     */
-    public var angularForce = 0.0;
+    var perspective:PerspectivePlugin;
 
     override public function new(?X:Float = 0, ?Y:Float = 0)
     {
         super(X, Y, AssetPaths.island__png);
-        scale.x = 1.5;
-        scale.y = 0.75;
-        updateHitbox();
         solid = false;
 
-        angularDrag = 5;
+        perspective = cast FlxG.plugins.get(PerspectivePlugin);
+        updatePerspective();
+    }
+
+    override function update(elapsed:Float)
+    {
+        super.update(elapsed);
+        updatePerspective();
     }
 
     /**
@@ -57,10 +57,18 @@ class IslandSprite extends FlxSprite
             shader);
     }
 
-    override function updateMotion(elapsed:Float):Void
+    function updatePerspective():Void
     {
-        angle += angularVelocity * elapsed;
-        angularVelocity += angularAcceleration * elapsed;
-        angularAcceleration = angularForce - angularDrag * angularVelocity;
+        if (perspective != null)
+        {
+            if (perspective.scaleX != scale.x || perspective.scaleY != scale.y)
+            {
+                scale.x = perspective.scaleX;
+                scale.y = perspective.scaleY;
+                updateHitbox();
+            }
+
+            angle = perspective.angle;
+        }
     }
 }

@@ -10,6 +10,8 @@ class PlayState extends FlxState
 {
     static inline final TOOLBAR_HEIGHT = 40;
 
+    var perspective:PerspectivePlugin;
+
     var showcaseMode = true;
 
     var scrolling = false;
@@ -21,6 +23,8 @@ class PlayState extends FlxState
     override public function create()
     {
         super.create();
+
+        perspective = FlxG.plugins.add(new PerspectivePlugin());
 
         bgColor = 0xff4379B7;
 
@@ -36,35 +40,53 @@ class PlayState extends FlxState
         openSubState(new TitleState());
     }
 
-    override public function update(elapsed:Float)
+    override function update(elapsed:Float)
     {
         super.update(elapsed);
 
+        checkScrolling();
+        perspective.angularForce = getAngularForce();
+    }
+
+    override function openSubState(SubState:FlxSubState)
+    {
+        remove(toolbar);
+        showcaseMode = true;
+        super.openSubState(SubState);
+    }
+
+    override function closeSubState()
+    {
+        super.closeSubState();
+        showcaseMode = false;
+        add(toolbar);
+    }
+
+    function getAngularForce():Float
+    {
         if (showcaseMode)
         {
-            island.angularForce = 60;
+            return 60;
         }
         else
         {
             if (scrolling)
             {
-                island.angularForce = (FlxG.mouse.screenX - xScrollStart) * 2.5;
+                return (FlxG.mouse.screenX - xScrollStart) * 2.5;
             }
             else if (FlxG.mouse.screenY > TOOLBAR_HEIGHT)
             {
                 if (FlxG.mouse.screenX > 0 && FlxG.mouse.screenX < 40)
-                    island.angularForce = -460;
+                    return -460;
                 else if (FlxG.mouse.screenX > FlxG.width - 40 && FlxG.mouse.screenX < FlxG.width)
-                    island.angularForce = 460;
-                else
-                    island.angularForce = 0;
-            }
-            else
-            {
-                island.angularForce = 0;
+                    return 460;
             }
         }
+        return 0;
+    }
 
+    function checkScrolling()
+    {
         if (FlxG.mouse.justPressedMiddle)
         {
             scrolling = true;
@@ -74,19 +96,5 @@ class PlayState extends FlxState
         {
             scrolling = false;
         }
-    }
-
-    override function openSubState(SubState:FlxSubState)
-    {
-        showcaseMode = true;
-        remove(toolbar);
-        super.openSubState(SubState);
-    }
-
-    override function closeSubState()
-    {
-        super.closeSubState();
-        add(toolbar);
-        showcaseMode = false;
     }
 }

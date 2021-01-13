@@ -24,16 +24,19 @@ class PlayState extends FlxState
     {
         super.create();
 
+        camera.scroll.set(-FlxG.width / 2, -FlxG.height * 43 / 70);
+
         perspective = FlxG.plugins.add(new PerspectivePlugin());
 
         bgColor = 0xff4379B7;
 
         toolbar = new FlxSprite(0, 0,
             FlxGraphic.fromRectangle(FlxG.width, TOOLBAR_HEIGHT, 0xff87adff));
+        toolbar.scrollFactor.set(0, 0);
 
         island = new IslandSprite();
-        island.x = (FlxG.width - island.width) / 2;
-        island.y = (FlxG.height - island.height) * 43 / 70;
+        island.x = -island.origin.x + island.offset.x;
+        island.y = -island.origin.y + island.offset.y;
         add(island);
 
         persistentUpdate = true;

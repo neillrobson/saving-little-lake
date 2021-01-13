@@ -18,6 +18,7 @@ class TitleState extends FlxSubState
         logo.loadGraphic(AssetPaths.logo__png);
         logo.x = (FlxG.width - logo.width) / 2;
         logo.y = 16;
+        logo.scrollFactor.set(0, 0);
         add(logo);
 
         titleText = new FlxText();
@@ -26,6 +27,7 @@ class TitleState extends FlxSubState
         titleText.text = "Click to start the game";
         titleText.x = (FlxG.width - titleText.width) / 2;
         titleText.y = FlxG.height - titleText.size * 3;
+        titleText.scrollFactor.set(0, 0);
         add(titleText);
     }
 

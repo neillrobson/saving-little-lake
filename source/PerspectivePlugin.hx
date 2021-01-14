@@ -32,7 +32,7 @@ class PerspectivePlugin extends FlxBasic
     {
         super.draw();
         coordinateTransform.identity();
-        coordinateTransform.rotate(angle);
+        coordinateTransform.rotate(angle * Math.PI / 180);
         coordinateTransform.scale(scaleX, scaleY);
     }
 }

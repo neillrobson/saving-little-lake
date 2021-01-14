@@ -24,6 +24,8 @@ class PlayState extends FlxState
     {
         super.create();
 
+        FlxG.debugger.drawDebug = true;
+
         camera.scroll.set(-FlxG.width / 2, -FlxG.height * 43 / 70);
 
         perspective = FlxG.plugins.add(new PerspectivePlugin());
@@ -41,6 +43,9 @@ class PlayState extends FlxState
 
         persistentUpdate = true;
         openSubState(new TitleState());
+
+        var tree = new Tree(40, -60);
+        add(tree);
     }
 
     override function update(elapsed:Float)

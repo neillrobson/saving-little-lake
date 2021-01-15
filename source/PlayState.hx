@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxSubState;
 import flixel.graphics.FlxGraphic;
+import flixel.math.FlxMath;
 
 class PlayState extends FlxState
 {
@@ -16,19 +17,22 @@ class PlayState extends FlxState
 
     var scrolling = false;
     var xScrollStart:Int;
+    var scaleY:Float;
 
     var toolbar:FlxSprite;
-    var island:IslandSprite;
+    var islandSprite:IslandSprite;
 
     override public function create()
     {
         super.create();
 
-        FlxG.debugger.drawDebug = true;
+        // FlxG.debugger.drawDebug = true;
+        FlxG.worldBounds.set(-128, -128, 256, 256);
 
         camera.scroll.set(-FlxG.width / 2, -FlxG.height * 43 / 70);
 
         perspective = FlxG.plugins.add(new PerspectivePlugin());
+        scaleY = perspective.scaleY;
 
         bgColor = 0xff4379B7;
 
@@ -36,16 +40,14 @@ class PlayState extends FlxState
             FlxGraphic.fromRectangle(FlxG.width, TOOLBAR_HEIGHT, 0xff87adff));
         toolbar.scrollFactor.set(0, 0);
 
-        island = new IslandSprite();
-        island.x = -island.origin.x + island.offset.x;
-        island.y = -island.origin.y + island.offset.y;
-        add(island);
+        islandSprite = new IslandSprite();
+        add(islandSprite);
 
         persistentUpdate = true;
         openSubState(new TitleState());
 
-        var tree = new Tree(40, -60);
-        add(tree);
+        var island = new Island(islandSprite.graphic.bitmap);
+        add(island.entities);
     }
 
     override function update(elapsed:Float)
@@ -54,6 +56,10 @@ class PlayState extends FlxState
 
         checkScrolling();
         perspective.angularForce = getAngularForce();
+
+        scaleY += FlxG.mouse.wheel * 0.1;
+        scaleY = FlxMath.bound(scaleY, 0, 1);
+        perspective.scaleY = scaleY;
     }
 
     override function openSubState(SubState:FlxSubState)

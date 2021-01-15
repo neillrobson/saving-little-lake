@@ -7,6 +7,6 @@ class Tree extends Entity
         super(cx, cy, 4);
         loadGraphic(AssetPaths.sheet__png, true, 8, 16);
         animation.frameIndex = 4;
-        anchor.set(4, 16);
+        offset.set(4, 16);
     }
 }

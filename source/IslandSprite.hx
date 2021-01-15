@@ -9,9 +9,14 @@ class IslandSprite extends FlxSprite
 {
     var perspective:PerspectivePlugin;
 
+    var cx:Float;
+    var cy:Float;
+
     override public function new(?X:Float = 0, ?Y:Float = 0)
     {
         super(X, Y, AssetPaths.island__png);
+        cx = X;
+        cy = Y;
         solid = false;
 
         perspective = cast FlxG.plugins.get(PerspectivePlugin);
@@ -66,6 +71,8 @@ class IslandSprite extends FlxSprite
                 scale.x = perspective.scaleX;
                 scale.y = perspective.scaleY;
                 updateHitbox();
+                x = -origin.x + offset.x + cx;
+                y = -origin.y + offset.y + cy;
             }
 
             angle = perspective.angle;

@@ -12,11 +12,17 @@ class Entity extends FlxSprite
 {
     final perspective:PerspectivePlugin;
 
-    public final anchor:FlxPoint = FlxPoint.get();
-
     public var cx(get, set):Float;
     public var cy(get, set):Float;
     public var r(default, set):Float;
+
+    public static inline function sq(i:Float)
+        return i * i;
+
+    public static function isOverlapping(e1:Entity, e2:Entity)
+    {
+        return sq(e1.cx - e2.cx) + sq(e1.cy - e2.cy) < sq(e1.r + e2.r);
+    }
 
     override public function new(?cx:Float = 0, ?cy:Float = 0, ?r:Float = 0)
     {
@@ -53,10 +59,6 @@ class Entity extends FlxSprite
 
         if (perspective != null)
             point.transform(perspective.coordinateTransform);
-
-        // We want the object to appear in the game world with its anchor point
-        // at its (x, y) coordinates.
-        point.subtractPoint(anchor);
 
         if (pixelPerfectPosition)
             point.floor();

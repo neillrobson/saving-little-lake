@@ -4,14 +4,14 @@ import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import openfl.display.BitmapData;
 
-class Island
+class Island extends FlxTypedGroup<Entity>
 {
-    public var entities:FlxTypedGroup<Entity> = new FlxTypedGroup();
-
     final image:BitmapData;
 
     public function new(image:BitmapData)
     {
+        super();
+
         this.image = image;
 
         for (_ in 0...7)
@@ -31,7 +31,7 @@ class Island
             var y = y0 + FlxG.random.floatNormal() * 12;
             var tree = new Tree(x, y);
             if (isFree(tree))
-                entities.add(tree);
+                add(tree);
             continue;
         }
     }
@@ -41,7 +41,7 @@ class Island
         if (!isOnGround(obj.cx, obj.cy))
             return false;
 
-        return !FlxG.overlap(obj, entities, null, Entity.isOverlapping);
+        return !FlxG.overlap(obj, this, null, Entity.isOverlapping);
     }
 
     function isOnGround(x:Float, y:Float):Bool

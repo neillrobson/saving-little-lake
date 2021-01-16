@@ -6,6 +6,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
+import flixel.util.FlxSort;
 import openfl.display.Graphics;
 
 class Entity extends FlxSprite
@@ -16,6 +17,8 @@ class Entity extends FlxSprite
     public var cy(get, set):Float;
     public var r(default, set):Float;
 
+    var transformPoint:FlxPoint = FlxPoint.get();
+
     public static inline function sq(i:Float)
         return i * i;
 
@@ -23,6 +26,9 @@ class Entity extends FlxSprite
     {
         return sq(e1.cx - e2.cx) + sq(e1.cy - e2.cy) < sq(e1.r + e2.r);
     }
+
+    public static function viewSort(order:Int, e1:Entity, e2:Entity)
+        return FlxSort.byValues(order, e1.transformPoint.y, e2.transformPoint.y);
 
     override public function new(?cx:Float = 0, ?cy:Float = 0, ?r:Float = 0)
     {
@@ -33,6 +39,10 @@ class Entity extends FlxSprite
         perspective = cast FlxG.plugins.get(PerspectivePlugin);
     }
 
+    /**
+     * Overridden to set the radius of the entity for collision-checking
+     * purposes, rather than having size set to the dimensions of the graphic.
+     */
     override function graphicLoaded()
     {
         super.graphicLoaded();
@@ -42,11 +52,15 @@ class Entity extends FlxSprite
     /**
      * Transform the on-screen point by the coordinate transform matrix provided
      * by the `PerspectivePlugin` if it exists.
-     *
-     * @param point
-     * @param Camera
-     * @return FlxPoint
      */
+    override function draw()
+    {
+        transformPoint.set(cx, cy);
+        if (perspective != null)
+            transformPoint.transform(perspective.coordinateTransform);
+        super.draw();
+    }
+
     override function getScreenPosition(?point:FlxPoint, ?Camera:FlxCamera):FlxPoint
     {
         if (point == null)
@@ -55,10 +69,7 @@ class Entity extends FlxSprite
         if (Camera == null)
             Camera = FlxG.camera;
 
-        point.set(cx, cy);
-
-        if (perspective != null)
-            point.transform(perspective.coordinateTransform);
+        point.copyFrom(transformPoint);
 
         if (pixelPerfectPosition)
             point.floor();
@@ -74,11 +85,10 @@ class Entity extends FlxSprite
         if (Camera == null)
             Camera = FlxG.camera;
 
-        point.set(cx, cy);
+        point.copyFrom(transformPoint);
 
         if (perspective != null)
         {
-            point.transform(perspective.coordinateTransform);
             point.subtract(r * perspective.scaleX, r * perspective.scaleY);
         }
         else

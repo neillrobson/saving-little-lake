@@ -21,6 +21,7 @@ class PlayState extends FlxState
 
     var toolbar:FlxSprite;
     var islandSprite:IslandSprite;
+    var island:Island;
 
     override public function create()
     {
@@ -46,8 +47,8 @@ class PlayState extends FlxState
         persistentUpdate = true;
         openSubState(new TitleState());
 
-        var island = new Island(islandSprite.graphic.bitmap);
-        add(island.entities);
+        island = new Island(islandSprite.graphic.bitmap);
+        add(island);
     }
 
     override function update(elapsed:Float)
@@ -60,6 +61,8 @@ class PlayState extends FlxState
         scaleY += FlxG.mouse.wheel * 0.1;
         scaleY = FlxMath.bound(scaleY, 0, 1);
         perspective.scaleY = scaleY;
+
+        island.sort(Entity.viewSort);
     }
 
     override function openSubState(SubState:FlxSubState)

@@ -17,9 +17,9 @@ class Tree extends Entity
     private var age(default, set):Float;
     private var spreadDelay:Float;
 
-    override public function new(cx:Float, cy:Float, age:Float, island:Island)
+    override public function new(cx:Float, cy:Float, age:Float, lake:Lake)
     {
-        super(cx, cy, 3, island);
+        super(cx, cy, 3, lake);
         loadGraphic(AssetPaths.sheet__png, true, 8, 16);
         offset.set(4, 16);
 
@@ -38,10 +38,10 @@ class Tree extends Entity
         {
             var xp = x + FlxG.random.floatNormal() * 8;
             var yp = y + FlxG.random.floatNormal() * 8;
-            var tree = new Tree(xp, yp, 0, island);
-            if (island.isFree(tree))
+            var tree = new Tree(xp, yp, 0, lake);
+            if (lake.isFree(tree))
             {
-                island.add(tree);
+                lake.add(tree);
                 --spreadDelay;
             }
         }

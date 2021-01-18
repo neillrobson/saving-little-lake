@@ -19,14 +19,13 @@ class PlayState extends FlxState
     var scaleY:Float;
 
     var toolbar:FlxSprite;
-    var islandSprite:IslandSprite;
-    var island:Island;
+    var groundSprite:GroundSprite;
+    var lake:Lake;
 
     override public function create()
     {
         super.create();
 
-        // FlxG.debugger.drawDebug = true;
         FlxG.worldBounds.set(-128, -128, 256, 256);
 
         camera.scroll.set(-FlxG.width / 2, -FlxG.height * 43 / 70);
@@ -34,17 +33,17 @@ class PlayState extends FlxState
         perspective = FlxG.plugins.add(new PerspectivePlugin());
         scaleY = perspective.scaleY;
 
-        bgColor = 0xff4379B7;
+        bgColor = 0xff696a6a;
 
         toolbar = new FlxSprite(0, 0,
-            FlxGraphic.fromRectangle(FlxG.width, TOOLBAR_HEIGHT, 0xff87adff));
+            FlxGraphic.fromRectangle(FlxG.width, TOOLBAR_HEIGHT, 0xff847e87));
         toolbar.scrollFactor.set(0, 0);
 
-        islandSprite = new IslandSprite();
-        add(islandSprite);
+        groundSprite = new GroundSprite();
+        add(groundSprite);
 
-        island = new Island(islandSprite.graphic.bitmap);
-        add(island);
+        lake = new Lake(groundSprite.graphic.bitmap);
+        add(lake);
 
         openSubState(new TitleState());
     }
@@ -56,7 +55,7 @@ class PlayState extends FlxState
         checkScrolling();
         perspective.angularForce = getAngularForce();
 
-        island.sort(Entity.viewSort);
+        lake.sort(Entity.viewSort);
     }
 
     override function openSubState(SubState:FlxSubState)

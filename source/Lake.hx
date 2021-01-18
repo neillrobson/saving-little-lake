@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import openfl.display.BitmapData;
 
-class Island extends FlxTypedGroup<Entity>
+class Lake extends FlxTypedGroup<Entity>
 {
     final image:BitmapData;
 

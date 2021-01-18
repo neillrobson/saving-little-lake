@@ -5,7 +5,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 
-class IslandSprite extends FlxSprite
+class GroundSprite extends FlxSprite
 {
     var perspective:PerspectivePlugin;
 
@@ -14,7 +14,7 @@ class IslandSprite extends FlxSprite
 
     override public function new(?X:Float = 0, ?Y:Float = 0)
     {
-        super(X, Y, AssetPaths.island__png);
+        super(X, Y, AssetPaths.lake__png);
         cx = X;
         cy = Y;
         solid = false;

@@ -50,6 +50,7 @@ class Lake extends FlxTypedGroup<Entity>
         {
             return false;
         }
-        return image.getPixel32(xPixel, yPixel) >>> 24 > 128;
+        var px = image.getPixel32(xPixel, yPixel);
+        return px >>> 24 > 128 && px != 0xff5b6ee1;
     }
 }

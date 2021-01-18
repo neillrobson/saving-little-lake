@@ -23,9 +23,9 @@ class IslandSprite extends FlxSprite
         updatePerspective();
     }
 
-    override function update(elapsed:Float)
+    override function draw()
     {
-        super.update(elapsed);
+        super.draw();
         updatePerspective();
     }
 

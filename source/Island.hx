@@ -19,7 +19,6 @@ class Island extends FlxTypedGroup<Entity>
             var x = Math.random() * 256 - 128;
             var y = Math.random() * 256 - 128;
             addForest(x, y);
-            continue;
         }
     }
 
@@ -29,14 +28,13 @@ class Island extends FlxTypedGroup<Entity>
         {
             var x = x0 + FlxG.random.floatNormal() * 12;
             var y = y0 + FlxG.random.floatNormal() * 12;
-            var tree = new Tree(x, y);
+            var tree = new Tree(x, y, FlxG.random.float() * Tree.MATURE_AGE, this);
             if (isFree(tree))
                 add(tree);
-            continue;
         }
     }
 
-    function isFree(obj:Entity)
+    public function isFree(obj:Entity)
     {
         if (!isOnGround(obj.cx, obj.cy))
             return false;

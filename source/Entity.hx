@@ -19,6 +19,8 @@ class Entity extends FlxSprite
 
     var transformPoint:FlxPoint = FlxPoint.get();
 
+    final island:Island;
+
     public static inline function sq(i:Float)
         return i * i;
 
@@ -30,12 +32,13 @@ class Entity extends FlxSprite
     public static function viewSort(order:Int, e1:Entity, e2:Entity)
         return FlxSort.byValues(order, e1.transformPoint.y, e2.transformPoint.y);
 
-    override public function new(?cx:Float = 0, ?cy:Float = 0, ?r:Float = 0)
+    override public function new(?cx:Float = 0, ?cy:Float = 0, ?r:Float = 0, island:Island)
     {
         super();
         this.r = r;
         this.cx = cx;
         this.cy = cy;
+        this.island = island;
         perspective = cast FlxG.plugins.get(PerspectivePlugin);
     }
 

@@ -5,7 +5,6 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxSubState;
 import flixel.graphics.FlxGraphic;
-import flixel.math.FlxMath;
 
 class PlayState extends FlxState
 {
@@ -44,23 +43,18 @@ class PlayState extends FlxState
         islandSprite = new IslandSprite();
         add(islandSprite);
 
-        persistentUpdate = true;
-        openSubState(new TitleState());
-
         island = new Island(islandSprite.graphic.bitmap);
         add(island);
+
+        openSubState(new TitleState());
     }
 
-    override function update(elapsed:Float)
+    override function draw()
     {
-        super.update(elapsed);
+        super.draw();
 
         checkScrolling();
         perspective.angularForce = getAngularForce();
-
-        scaleY += FlxG.mouse.wheel * 0.1;
-        scaleY = FlxMath.bound(scaleY, 0, 1);
-        perspective.scaleY = scaleY;
 
         island.sort(Entity.viewSort);
     }

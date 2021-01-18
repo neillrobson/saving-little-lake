@@ -25,8 +25,8 @@ class GroundSprite extends FlxSprite
 
     override function draw()
     {
-        super.draw();
         updatePerspective();
+        super.draw();
     }
 
     /**
